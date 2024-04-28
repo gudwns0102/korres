@@ -45,4 +45,4 @@ export function LoginScreen() {
   );
 }
 
-LoginScreen.name = "Login";
+LoginScreen.title = "Login";
