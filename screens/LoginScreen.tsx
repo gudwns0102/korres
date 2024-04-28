@@ -1,6 +1,6 @@
 import { css } from "@emotion/native";
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Alert, Button, Text, TextInput, View } from "react-native";
 import { useSession } from "../hooks/useSession";
 import { Async } from "../components/Async";
 
@@ -32,7 +32,11 @@ export function LoginScreen() {
       <Button
         title="로그인"
         onPress={() => {
-          session.login(id, password);
+          session.login(id, password).catch(error => {
+            if (error instanceof Error) {
+              Alert.alert("로그인 실패", error.message);
+            }
+          });
         }}
       />
       <Text>
