@@ -1,8 +1,7 @@
 import { css } from "@emotion/native";
 import { useState } from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
+import { Alert, Button, TextInput, View } from "react-native";
 import { useSession } from "../hooks/useSession";
-import { Async } from "../components/Async";
 
 export function LoginScreen() {
   const session = useSession();
@@ -39,12 +38,6 @@ export function LoginScreen() {
           });
         }}
       />
-      <Text>
-        LoggedIn:{" "}
-        <Async fallback={<Text>Wait...</Text>}>
-          {session.checkLoggedIn().then(res => String(res))}
-        </Async>
-      </Text>
     </View>
   );
 }

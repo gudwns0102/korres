@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KorailSession } from "korail-ts";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { LoginScreen } from "./screens/LoginScreen";
@@ -40,38 +41,43 @@ function App() {
         session,
       }}
     >
-      <NavigationContainer>
-        {!loggedIn ? (
-          <>
-            <Stack.Navigator initialRouteName={LoginScreen.title}>
-              <Stack.Screen name={LoginScreen.title} component={LoginScreen} />
-            </Stack.Navigator>
-          </>
-        ) : (
-          <>
-            <Stack.Navigator>
-              <Stack.Screen
-                name={HomeScreen.title}
-                component={HomeScreen}
-                options={props => ({
-                  headerRight: () => (
-                    <Button
-                      title="Setting"
-                      onPress={() => {
-                        props.navigation.navigate(SettingScreen.title);
-                      }}
-                    />
-                  ),
-                })}
-              />
-              <Stack.Screen
-                name={SettingScreen.title}
-                component={SettingScreen}
-              />
-            </Stack.Navigator>
-          </>
-        )}
-      </NavigationContainer>
+      <GestureHandlerRootView>
+        <NavigationContainer>
+          {!loggedIn ? (
+            <>
+              <Stack.Navigator initialRouteName={LoginScreen.title}>
+                <Stack.Screen
+                  name={LoginScreen.title}
+                  component={LoginScreen}
+                />
+              </Stack.Navigator>
+            </>
+          ) : (
+            <>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name={HomeScreen.title}
+                  component={HomeScreen}
+                  options={props => ({
+                    headerRight: () => (
+                      <Button
+                        title="Setting"
+                        onPress={() => {
+                          props.navigation.navigate(SettingScreen.title);
+                        }}
+                      />
+                    ),
+                  })}
+                />
+                <Stack.Screen
+                  name={SettingScreen.title}
+                  component={SettingScreen}
+                />
+              </Stack.Navigator>
+            </>
+          )}
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </AppContext.Provider>
   );
 }
