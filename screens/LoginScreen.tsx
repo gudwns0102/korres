@@ -44,3 +44,5 @@ export function LoginScreen() {
     </View>
   );
 }
+
+LoginScreen.name = "Login";

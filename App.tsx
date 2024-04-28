@@ -1,15 +1,10 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { css } from "@emotion/native";
-import { SafeAreaView } from "react-native";
 import { KorailSession } from "korail-ts";
 import { createContext, useMemo } from "react";
 import { LoginScreen } from "./screens/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
 
 export const AppContext = createContext<{
   session: KorailSession;
@@ -24,15 +19,11 @@ function App() {
         session,
       }}
     >
-      <SafeAreaView
-        style={css`
-          flex: 1;
-          align-items: center;
-          justify-content: center;
-        `}
-      >
-        <LoginScreen />
-      </SafeAreaView>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={LoginScreen.name}>
+          <Stack.Screen name={LoginScreen.name} component={LoginScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </AppContext.Provider>
   );
 }
