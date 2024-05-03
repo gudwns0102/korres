@@ -5,7 +5,7 @@ import { css } from "@emotion/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export function TrainListScreen(
-  props: NativeStackScreenProps<RootStackParamList, "Home">,
+  props: NativeStackScreenProps<RootStackParamList, "TrainList">,
 ) {
   const session = useSession();
   const [trains, setTrains] = useState<Array<any>>([]);
