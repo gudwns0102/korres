@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useSession } from "../hooks/useSession";
 import { FlatList, Text, View } from "react-native";
 import { css } from "@emotion/native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export function TrainListScreen() {
+export function TrainListScreen(
+  props: NativeStackScreenProps<RootStackParamList, "Home">,
+) {
   const session = useSession();
   const [trains, setTrains] = useState<Array<any>>([]);
 

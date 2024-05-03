@@ -1,7 +1,10 @@
 import { Button, ScrollView } from "react-native";
 import { useSession } from "../hooks/useSession";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export function SettingScreen() {
+export function SettingScreen(
+  props: NativeStackScreenProps<RootStackParamList, "Setting">,
+) {
   const session = useSession();
 
   return (
