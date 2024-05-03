@@ -1,24 +1,39 @@
 import { useRef, useState } from "react";
-import { css } from "@emotion/native";
-import { Button, Text, TouchableOpacity, View } from "react-native";
-import { useSession } from "hooks/useSession";
+import styled, { css } from "@emotion/native";
+import { Text, TouchableOpacity, View } from "react-native";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { StationsListBottomSheet } from "components/StationListBottomSheet";
-import { Station } from "korail-ts";
-import { useNavigation } from "@react-navigation/native";
+import { Station, YYYY_MM_DD } from "korail-ts";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { TrainList } from "components/TrainList";
+
+const MenuRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  padding: 0 16px;
+`;
+
+const MenuLabelCell = styled.Text`
+  width: 80px;
+`;
+
+const MenuCell = styled.Text`
+  flex: 1;
+`;
 
 export function HomeScreen(
   props: NativeStackScreenProps<RootStackParamList, "Home">,
 ) {
-  const session = useSession();
-
-  const navigation = useNavigation();
-
   const ref = useRef<BottomSheet>(null);
 
   const [from, setFrom] = useState<Station | null>(null);
   const [to, setTo] = useState<Station | null>(null);
+  const [date, setDate] = useState<YYYY_MM_DD>(
+    // dayjs().format("YYYY-MM-DD") as YYYY_MM_DD,
+    "2024-05-04",
+  );
 
   const [target, setTarget] = useState<"from" | "to">("from");
 
@@ -26,51 +41,53 @@ export function HomeScreen(
     <View
       style={css`
         flex: 1;
-        align-items: center;
       `}
     >
-      <View
-        style={css`
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          gap: 48px;
-        `}
-      >
-        {[from?.stn_nm || "출발역", to?.stn_nm || "도착역"].map(
-          (title, index) => (
-            <TouchableOpacity
-              key={title}
-              onPress={() => {
-                setTarget(index === 0 ? "from" : "to");
-                ref.current?.expand();
-              }}
-            >
-              <Text
-                style={css`
-                  font-size: 32px;
-                  font-weight: 700;
-                `}
-              >
-                {title}
-              </Text>
-            </TouchableOpacity>
-          ),
-        )}
+      <View>
+        <MenuRow>
+          <MenuLabelCell>출발역</MenuLabelCell>
+          <TouchableOpacity
+            style={css`
+              flex: 1;
+            `}
+            onPress={() => {
+              setTarget("from");
+              ref.current?.expand();
+            }}
+          >
+            <Text>{from?.stn_nm || "선택해주세요"}</Text>
+          </TouchableOpacity>
+        </MenuRow>
+        <MenuRow>
+          <MenuLabelCell>도착역</MenuLabelCell>
+          <TouchableOpacity
+            style={css`
+              flex: 1;
+            `}
+            onPress={() => {
+              setTarget("to");
+              ref.current?.expand();
+            }}
+          >
+            <Text>{to?.stn_nm || "선택해주세요"}</Text>
+          </TouchableOpacity>
+        </MenuRow>
+        <MenuRow>
+          <MenuLabelCell>날짜</MenuLabelCell>
+          <MenuCell>{date}</MenuCell>
+        </MenuRow>
       </View>
-      <Button
-        title="조회하기"
-        disabled={!from || !to}
-        onPress={() => {
-          if (from && to)
-            props.navigation.navigate("TrainList", {
-              from,
-              to,
-            });
-        }}
-      />
+      {from && to && date && (
+        <TrainList
+          key={`${from.stn_nm}-${to.stn_nm}-${date}`}
+          from={from.stn_nm}
+          to={to.stn_nm}
+          date={date}
+        />
+      )}
       <BottomSheet
         ref={ref}
+        key={target}
         index={1}
         snapPoints={["25%", "80%"]}
         backdropComponent={props => <BottomSheetBackdrop {...props} />}

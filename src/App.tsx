@@ -10,10 +10,12 @@ import {
 import { HomeScreen } from "./screens/HomeScreen";
 import { Button } from "react-native";
 import { SettingScreen } from "./screens/SettingScreen";
-import { TrainListScreen } from "./screens/TrainListScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { TabBar } from "components/TabBar";
 
 const AuthStack = createNativeStackNavigator();
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<RootStackParamList>();
+// const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppContext = createContext<{
   session: KorailSession;
@@ -56,8 +58,8 @@ function App() {
             </>
           ) : (
             <>
-              <Stack.Navigator>
-                <Stack.Screen
+              <Tab.Navigator tabBar={TabBar}>
+                <Tab.Screen
                   name={"Home"}
                   component={HomeScreen}
                   options={({
@@ -78,9 +80,8 @@ function App() {
                     ),
                   })}
                 />
-                <Stack.Screen name={"TrainList"} component={TrainListScreen} />
-                <Stack.Screen name={"Setting"} component={SettingScreen} />
-              </Stack.Navigator>
+                <Tab.Screen name={"Setting"} component={SettingScreen} />
+              </Tab.Navigator>
             </>
           )}
         </NavigationContainer>
