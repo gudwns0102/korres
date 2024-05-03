@@ -13,8 +13,8 @@ export function TrainListScreen(
   useEffect(() => {
     session
       .scheduleView({
-        dep: "서울",
-        arr: "부산",
+        dep: props.route.params.from.stn_nm,
+        arr: props.route.params.to.stn_nm,
       })
       .then(response => {
         setTrains(response.data.trn_infos.trn_info);

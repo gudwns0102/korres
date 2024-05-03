@@ -3,7 +3,10 @@ import { KorailSession } from "korail-ts";
 import { createContext, useEffect, useMemo, useState } from "react";
 import { LoginScreen } from "./screens/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 import { HomeScreen } from "./screens/HomeScreen";
 import { Button } from "react-native";
 import { SettingScreen } from "./screens/SettingScreen";
@@ -57,12 +60,19 @@ function App() {
                 <Stack.Screen
                   name={"Home"}
                   component={HomeScreen}
-                  options={props => ({
+                  options={({
+                    navigation,
+                  }: {
+                    navigation: NativeStackNavigationProp<
+                      RootStackParamList,
+                      "Home"
+                    >;
+                  }) => ({
                     headerRight: () => (
                       <Button
                         title="Setting"
                         onPress={() => {
-                          props.navigation.navigate("");
+                          navigation.navigate("Setting");
                         }}
                       />
                     ),
