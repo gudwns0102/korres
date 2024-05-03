@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useSession } from "../hooks/useSession";
-import { FlatList } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
 import styled, { css } from "@emotion/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useAsync } from "hooks/useAsync";
 
 const Row = styled.View`
   display: flex;
@@ -24,18 +25,17 @@ export function TrainListScreen(
   props: NativeStackScreenProps<RootStackParamList, "TrainList">,
 ) {
   const session = useSession();
-  const [trains, setTrains] = useState<Array<any>>([]);
 
-  useEffect(() => {
-    session
-      .scheduleView({
+  const [{ data, fetching }] = useAsync(session.scheduleView, {
+    variables: [
+      {
         dep: props.route.params.from.stn_nm,
         arr: props.route.params.to.stn_nm,
-      })
-      .then(response => {
-        setTrains(response.data.trn_infos.trn_info);
-      });
-  }, []);
+      },
+    ],
+  });
+
+  const trains = useMemo(() => data?.data.trn_infos.trn_info ?? [], [data]);
 
   return (
     <FlatList
@@ -49,6 +49,13 @@ export function TrainListScreen(
           <Cell>출발시간</Cell>
           <Cell>도착시간</Cell>
         </Row>
+      }
+      ListEmptyComponent={
+        fetching ? (
+          <ActivityIndicator />
+        ) : trains.length === 0 ? (
+          <Cell>데이터가 없습니다.</Cell>
+        ) : null
       }
       stickyHeaderIndices={[0]}
       renderItem={({ item }) => (
