@@ -1,8 +1,24 @@
 import { useEffect, useState } from "react";
 import { useSession } from "../hooks/useSession";
-import { FlatList, Text, View } from "react-native";
-import { css } from "@emotion/native";
+import { FlatList } from "react-native";
+import styled, { css } from "@emotion/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+const Row = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 36px;
+  background-color: #fff;
+`;
+
+const Cell = styled.Text`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`;
 
 export function TrainListScreen(
   props: NativeStackScreenProps<RootStackParamList, "TrainList">,
@@ -23,19 +39,24 @@ export function TrainListScreen(
 
   return (
     <FlatList
+      style={css`
+        flex: 1;
+      `}
       data={trains}
+      ListHeaderComponent={
+        <Row>
+          <Cell>ㅁㄴㅇㄹ</Cell>
+          <Cell>출발시간</Cell>
+          <Cell>도착시간</Cell>
+        </Row>
+      }
+      stickyHeaderIndices={[0]}
       renderItem={({ item }) => (
-        <View
-          style={css`
-            display: flex;
-            align-items: center;
-            align-items: center;
-          `}
-        >
-          <Text>테스트</Text>
-          <Text>{item.h_dpt_tm}</Text>
-          <Text>{item.h_arv_tm}</Text>
-        </View>
+        <Row>
+          <Cell>테스트</Cell>
+          <Cell>{item.h_dpt_tm}</Cell>
+          <Cell>{item.h_arv_tm}</Cell>
+        </Row>
       )}
     />
   );

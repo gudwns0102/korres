@@ -60,11 +60,13 @@ export function HomeScreen(
       </View>
       <Button
         title="조회하기"
+        disabled={!from || !to}
         onPress={() => {
-          props.navigation.navigate("TrainList", {
-            from: 1,
-            to,
-          });
+          if (from && to)
+            props.navigation.navigate("TrainList", {
+              from,
+              to,
+            });
         }}
       />
       <BottomSheet
