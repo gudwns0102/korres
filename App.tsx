@@ -7,8 +7,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "./screens/HomeScreen";
 import { Button } from "react-native";
 import { SettingScreen } from "./screens/SettingScreen";
+import { TrainListScreen } from "./screens/TrainListScreen";
 
-const Stack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppContext = createContext<{
   session: KorailSession;
@@ -45,34 +47,29 @@ function App() {
         <NavigationContainer>
           {!loggedIn ? (
             <>
-              <Stack.Navigator initialRouteName={LoginScreen.title}>
-                <Stack.Screen
-                  name={LoginScreen.title}
-                  component={LoginScreen}
-                />
-              </Stack.Navigator>
+              <AuthStack.Navigator initialRouteName={"Login"}>
+                <AuthStack.Screen name={"Login"} component={LoginScreen} />
+              </AuthStack.Navigator>
             </>
           ) : (
             <>
               <Stack.Navigator>
                 <Stack.Screen
-                  name={HomeScreen.title}
+                  name={"Home"}
                   component={HomeScreen}
                   options={props => ({
                     headerRight: () => (
                       <Button
                         title="Setting"
                         onPress={() => {
-                          props.navigation.navigate(SettingScreen.title);
+                          props.navigation.navigate("");
                         }}
                       />
                     ),
                   })}
                 />
-                <Stack.Screen
-                  name={SettingScreen.title}
-                  component={SettingScreen}
-                />
+                <Stack.Screen name={"TrainList"} component={TrainListScreen} />
+                <Stack.Screen name={"Setting"} component={SettingScreen} />
               </Stack.Navigator>
             </>
           )}

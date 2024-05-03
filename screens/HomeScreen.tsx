@@ -1,13 +1,19 @@
 import { useRef, useState } from "react";
 import { css } from "@emotion/native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Button, Text, TouchableOpacity, View } from "react-native";
 import { useSession } from "../hooks/useSession";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { StationsListBottomSheet } from "./StationListBottomSheet";
 import { Station } from "korail-ts";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export function HomeScreen() {
+export function HomeScreen(
+  props: NativeStackScreenProps<RootStackParamList, "Home">,
+) {
   const session = useSession();
+
+  const navigation = useNavigation();
 
   const ref = useRef<BottomSheet>(null);
 
@@ -52,6 +58,15 @@ export function HomeScreen() {
           ),
         )}
       </View>
+      <Button
+        title="조회하기"
+        onPress={() => {
+          props.navigation.navigate("TrainList", {
+            from: 1,
+            to,
+          });
+        }}
+      />
       <BottomSheet
         ref={ref}
         index={1}
@@ -73,5 +88,3 @@ export function HomeScreen() {
     </View>
   );
 }
-
-HomeScreen.title = "Home";

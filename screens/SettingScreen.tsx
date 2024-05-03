@@ -15,5 +15,3 @@ export function SettingScreen() {
     </ScrollView>
   );
 }
-
-SettingScreen.title = "Setting";

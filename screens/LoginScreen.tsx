@@ -26,6 +26,7 @@ export function LoginScreen() {
       <TextInput
         placeholder="비밀번호"
         value={password}
+        secureTextEntry={true}
         onChangeText={setPassword}
       />
       <Button
@@ -41,5 +42,3 @@ export function LoginScreen() {
     </View>
   );
 }
-
-LoginScreen.title = "Login";
