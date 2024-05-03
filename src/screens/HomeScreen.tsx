@@ -3,7 +3,7 @@ import styled, { css } from "@emotion/native";
 import { Text, TouchableOpacity, View } from "react-native";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { StationsListBottomSheet } from "components/StationListBottomSheet";
-import { Station, YYYY_MM_DD } from "korail-ts";
+import { YYYY_MM_DD } from "korail-ts";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { TrainList } from "components/TrainList";
 
@@ -28,11 +28,11 @@ export function HomeScreen(
 ) {
   const ref = useRef<BottomSheet>(null);
 
-  const [from, setFrom] = useState<Station | null>(null);
-  const [to, setTo] = useState<Station | null>(null);
+  const [from, setFrom] = useState<string | null>("서울");
+  const [to, setTo] = useState<string | null>("부산");
   const [date, setDate] = useState<YYYY_MM_DD>(
     // dayjs().format("YYYY-MM-DD") as YYYY_MM_DD,
-    "2024-05-04",
+    "2024-05-03",
   );
 
   const [target, setTarget] = useState<"from" | "to">("from");
@@ -55,7 +55,7 @@ export function HomeScreen(
               ref.current?.expand();
             }}
           >
-            <Text>{from?.stn_nm || "선택해주세요"}</Text>
+            <Text>{from || "선택해주세요"}</Text>
           </TouchableOpacity>
         </MenuRow>
         <MenuRow>
@@ -69,7 +69,7 @@ export function HomeScreen(
               ref.current?.expand();
             }}
           >
-            <Text>{to?.stn_nm || "선택해주세요"}</Text>
+            <Text>{to || "선택해주세요"}</Text>
           </TouchableOpacity>
         </MenuRow>
         <MenuRow>
@@ -79,9 +79,9 @@ export function HomeScreen(
       </View>
       {from && to && date && (
         <TrainList
-          key={`${from.stn_nm}-${to.stn_nm}-${date}`}
-          from={from.stn_nm}
-          to={to.stn_nm}
+          key={`${from}-${to}-${date}`}
+          from={from}
+          to={to}
           date={date}
         />
       )}
@@ -95,9 +95,9 @@ export function HomeScreen(
         <StationsListBottomSheet
           onSelect={station => {
             if (target === "from") {
-              setFrom(station);
+              setFrom(station.stn_nm);
             } else {
-              setTo(station);
+              setTo(station.stn_nm);
             }
 
             ref.current?.close();

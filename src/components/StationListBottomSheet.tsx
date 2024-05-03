@@ -42,6 +42,7 @@ export function StationsListBottomSheet({
             `}
             placeholder="검색"
             value={search}
+            autoFocus
             onChangeText={setSearch}
           />
         </View>

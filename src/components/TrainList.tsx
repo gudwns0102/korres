@@ -4,7 +4,7 @@ import { FlatList } from "react-native";
 import styled, { css } from "@emotion/native";
 import { Schedule, YYYYMMDD, hhmmss } from "korail-ts";
 import { View, TouchableOpacity } from "react-native";
-import notifee from "@notifee/react-native";
+import { useBackgroundService } from "hooks/useBackgroundService";
 
 const Row = styled.View`
   display: flex;
@@ -33,6 +33,7 @@ export function TrainList({
   date: string;
 }) {
   const session = useSession();
+  const backgroundService = useBackgroundService();
   const [trains, setTrains] = useState<Array<Schedule>>([]);
 
   const fetch = useCallback(async () => {
@@ -78,31 +79,7 @@ export function TrainList({
       )}
       stickyHeaderIndices={[0]}
       renderItem={({ item }) => (
-        <TouchableOpacity
-          onPress={async () => {
-            await notifee.requestPermission();
-
-            // Create a channel (required for Android)
-            const channelId = await notifee.createChannel({
-              id: "default",
-              name: "Default Channel",
-            });
-
-            // Display a notification
-            await notifee.displayNotification({
-              title: "열차예약 시작",
-              body: `${item.h_trn_clsf_nm}: ${item.h_dpt_tm_qb} - ${item.h_arv_tm_qb}`,
-              android: {
-                channelId,
-                // smallIcon: "name-of-a-small-icon", // optional, defaults to 'ic_launcher'.
-                // pressAction is needed if you want the notification to open the app when pressed
-                pressAction: {
-                  id: "default",
-                },
-              },
-            });
-          }}
-        >
+        <TouchableOpacity onPress={() => backgroundService.pushSchedule(item)}>
           <Row>
             <Cell>{item.h_trn_clsf_nm}</Cell>
             <Cell>{item.h_dpt_tm_qb}</Cell>

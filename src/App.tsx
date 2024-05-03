@@ -12,18 +12,23 @@ import { Button } from "react-native";
 import { SettingScreen } from "./screens/SettingScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabBar } from "components/TabBar";
+import { KorresBackgroundService } from "model/KorresBackgroundService";
 
 const AuthStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator<RootStackParamList>();
-// const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const AppContext = createContext<{
   session: KorailSession;
+  backgroundService: KorresBackgroundService;
 }>(undefined as any);
 
 function App() {
   const session = useMemo(() => new KorailSession(), []);
   const [loggedIn, setLoggedIn] = useState(false);
+  const backgroundService = useMemo(
+    () => new KorresBackgroundService(session),
+    [],
+  );
 
   useEffect(() => {
     session.checkLoggedIn().then(setLoggedIn);
@@ -46,6 +51,7 @@ function App() {
     <AppContext.Provider
       value={{
         session,
+        backgroundService,
       }}
     >
       <GestureHandlerRootView>
