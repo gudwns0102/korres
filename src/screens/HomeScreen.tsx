@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import { css } from "@emotion/native";
 import { Button, Text, TouchableOpacity, View } from "react-native";
-import { useSession } from "../hooks/useSession";
+import { useSession } from "hooks/useSession";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { StationsListBottomSheet } from "./StationListBottomSheet";
+import { StationsListBottomSheet } from "components/StationListBottomSheet";
 import { Station } from "korail-ts";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
